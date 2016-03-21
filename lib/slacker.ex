@@ -21,8 +21,8 @@ defmodule Slacker do
         {:ok, %State{api_token: api_token}}
       end
 
-      def say(slacker, channel, message) do
-        GenServer.cast(slacker, {:send_message, channel, message})
+      def say(slacker, channel, message, attachments \\ []) do
+        GenServer.cast(slacker, {:send_message, channel, message, attachments})
       end
 
       def handle_cast(:connect, state) do
@@ -35,8 +35,8 @@ defmodule Slacker do
         {:noreply, %{state | rtm: rtm}}
       end
 
-      def handle_cast({:send_message, channel, msg}, state) do
-        GenServer.cast(state.rtm, {:send_message, channel, msg})
+      def handle_cast({:send_message, channel, msg, attachments}, state) do
+        GenServer.cast(state.rtm, {:send_message, channel, msg, attachments})
         {:noreply, state}
       end
     end

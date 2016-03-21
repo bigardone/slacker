@@ -25,11 +25,12 @@ defmodule Slacker.RTM do
     {:ok, state}
   end
 
-  def websocket_info({_gen_type, {:send_message, channel, msg}}, _conn_state, state) do
+  def websocket_info({_gen_type, {:send_message, channel, msg, attachments}}, _conn_state, state) do
     reply = %{id: 1,
               type: :message,
               channel: channel,
-              text: msg
+              text: msg,
+              attachments: attachments
             } |> Poison.encode!
 
     {:reply, {:text, reply}, state}
